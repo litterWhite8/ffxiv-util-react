@@ -1,9 +1,13 @@
 import {useEffect} from "react";
-import "../util/overlay.js"
+import "../utils/overlay.js"
+import request from "../utils/request.js";
 
 export default function Root() {
 
     useEffect(()=> {
+        request({
+            url:"/test"
+        })
         addOverlayListener("LogLine",data => {
             console.log(data)
             console.log(1)
