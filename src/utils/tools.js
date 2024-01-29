@@ -1,3 +1,4 @@
+//工具
 export function tansParams(params) {
     let result = ''
     for (const propName of Object.keys(params)) {
