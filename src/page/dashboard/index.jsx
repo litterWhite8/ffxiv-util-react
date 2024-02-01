@@ -1,16 +1,14 @@
 import styled from "styled-components";
-import {NavLink, Outlet, Route} from "react-router-dom";
-import UserManage from "./userManage.jsx"
+import {NavLink, Outlet} from "react-router-dom";
 
-export default function DashBoard(){
-    const Page = styled.div`
+const Page = styled.div`
       height: ${props => props.height}px;
       width: 100%;
       display: flex;
       flex-direction: row;
 
       .menu {
-        width: 15%;
+        width: 260px;
         background-color: rgb(0, 0, 0);
       }
 
@@ -27,14 +25,13 @@ export default function DashBoard(){
       }
 
       .nav-link {
-        width: calc(100% - 34);
-        border-radius: 5px;
+        width: calc(100% - 50px);
+        border-radius: 8px;
         height: 40px;
         line-height: 40px;
-        font-size: 17px;
-        font-weight: 700;
-        padding-left: 15px;
-        margin: 3px 12px 3px 7px;
+        font-size: .875rem;
+        padding:0 0 0 15px;
+        margin: 3px 23px 3px 12px;
         display: block;
         color: #fdfdfd;
       }
@@ -46,10 +43,12 @@ export default function DashBoard(){
       }
 
       .content {
-        width: 85%;
+        width: calc(100% - 260px);
         background-color: #343540;
       }
     `
+
+export default function DashBoard(){
 
     const pageHeight = window.innerHeight
 
@@ -57,11 +56,12 @@ export default function DashBoard(){
         <Page height={pageHeight}>
             <div className={"menu"}>
                 <h1 className={"menu-title"}>肥肥工具站</h1>
-                <div>
+                <div style={{marginTop:'24px'}}>
+                    <div style={{paddingLeft:'27px',color:'#999',fontSize:'.75rem',marginBottom:'7px'}}> 系统管理</div>
                     <NavLink to={"/dashboard/userManage"} className={"nav-link"}
                              style={({ isActive, isPending, isTransitioning }) => {
                                  return {
-                                     backgroundColor: isActive ? "rgb(66,68,73)" : "",
+                                     backgroundColor: isActive ? "rgb(52,53,64)" : "",
                                  };
                              }}
                     >用户管理</NavLink>
