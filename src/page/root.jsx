@@ -2,6 +2,7 @@ import {useEffect} from "react";
 import "../utils/overlay.js"
 import request from "../utils/request.js";
 import EorzeaTimeConverter from "../utils/EorzeaTimeConverter.js";
+import LoginPage from "./system/login.jsx";
 
 export default function Root() {
 
@@ -11,7 +12,7 @@ export default function Root() {
         et.startClockUpdate(1000)
 
         request({
-            url:"/test"
+            //url:"/test"
         })
         addOverlayListener("LogLine",data => {
             console.log(data)
@@ -21,8 +22,6 @@ export default function Root() {
     },[])
 
     return (
-       <div>
-           1234
-       </div>
+       <LoginPage/>
     );
 }

@@ -3,45 +3,116 @@ import {useState} from "react";
 import styled from "styled-components";
 import {login} from "../../api/system/user.js"
 import { useNavigate } from "react-router-dom";
+import React from 'react';
 
+const Background = ({ className, children }) => (
+    <div className={className}>
+        {children}
+    </div>
+);
+const LoginFrame = ({ className, children }) => (
+        <div className={className}>
+            <form>{children}</form>
+        </div>
+)
 
-let Background = styled.body`
-        background-color: #1a1a1a;
-        justify-content: center;
-        align-items: center;
-    `;
-let LoginFrame = styled.div`
-        background-color: #232323;
-        background-size: 100%, 100%;
+const StyledBackgroundDiv = styled(Background)`
+    background-color: #1a1a1a;
+    //background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+`;
+const StyledLoginFrameDiv = styled(LoginFrame)`
+    background-color: #232323;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    width: 20%;
+
+    .description {
+        font-size: 0.9em;
+        margin-top: 10px;
+        margin-bottom: 1px;
+    }
+    .table {
+        display: flex;
+        border-collapse: collapse;
+        text-align: center;
+        padding: 1px;
+        margin: auto;
+        width: 100%;
+    }
+    .centered-row {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 60vh;
-        width: 20%;
+        ;
+    }
+    .centered-cell {
+        text-align: center;
+        vertical-align: middle;
+    }
+    .inputText {
+        height: 30px;
+        width: 240px;
+    }
+    .url {
+        font-size: 0.6em;
+        line-height: 0.1;
+    }
+    .checkboxLabel {
+        font-size: 0.8em;
+    }
+    .checkbox {
+        white-space: nowrap;
+    }
+`;
 
-        .description {
-            font-size: 1em;
-            margin-top: 10px;
-            margin-bottom: 8px;
-        }
+function InputText({ des, inputType, value, onChange }) {
+    const handleInputChange = (e) => {
+        onChange(e.target.value);
+    };
 
-        .inputText {
-            height: 3vh;
-            width: 200px;
-        }
+    return (
+        <label>
+            <input className={"inputText"}
+                   type={inputType}
+                   id={des.toLowerCase()}
+                   placeholder={"Enter your " + des.toLowerCase() + " here."}
+                   value={value}
+                   onChange={handleInputChange}
+                   required={true}
+            />
+        </label>
+    )
+}
+function CheckBox({ des, value, onChange }) {
+    const handleCheckboxChange = () => {
+        onChange(!value);
+    };
 
-        .url {
-            font-size: 0.6em;
-        }
+    return (
+        <label className={"checkboxLabel"}>
+            <input className={"checkbox"}
+                   type={"checkbox"}
+                   id={des.toLowerCase()}
+                   checked={value}
+                   onChange={handleCheckboxChange}
+            />
+            {des}
+        </label>
+    )
+}
 
-        .btn {
-            display: flex;
-        }
-    `;
 export default function LoginPage() {
     //  manage input statement
     const [account, setAccount] = useState('');
     const [password, setPassword] = useState('');
+    const [isChecked, setIsChecked] = useState(false);
 
     const navigate = useNavigate()
 
@@ -55,35 +126,59 @@ export default function LoginPage() {
         })
     }
 
-
-
     return (
-        <Background>
-            <LoginFrame>
-                <form>
-                    <InputText value={account} onChange={setAccount}></InputText>
-                    <a className={"url"} href={""}> 注册账号 </a><br/>
-                    <InputText value={password} onChange={setPassword}></InputText>
-                    <a className={"url"} href={""}> 忘记密码 </a><br/>
-                </form>
-                <button className={"btn"} onClick={handleSubmit}> Log in</button>
-            </LoginFrame>
-        </Background>
+        <StyledBackgroundDiv>
+            <StyledLoginFrameDiv>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p className={"description"}>Account</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <InputText des={"Account"} inputType={"text"} value={account} onChange={setAccount}></InputText>
+                            </td>
+                            <td>
+                                <a className={"url"} href={""}>Sign up</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p className={"description"}>Password</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <InputText des={"Password"} inputType={"password"} value={password} onChange={setPassword}></InputText>
+                            </td>
+                            <td>
+                                <a className={"url"} href={""}>Forget key</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <CheckBox des={"Stay logged in"} value={isChecked} onChange={setIsChecked}></CheckBox>
+                            </td>
+                        </tr>
+                        <tr className={"centered-row"}>
+                            <td className={"centered-cell"}>
+                                <button className={"btn"} onClick={handleSubmit}> Log in </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </StyledLoginFrameDiv>
+        </StyledBackgroundDiv>
     );
 }
 
-import React from 'react';
 
-const InputText = ({ value, onChange }) => {
-    const handleInputChange = (e) => {
-        onChange(e.target.value);
-    };
-
-    return (
-        <input
-            value={value}
-            onChange={handleInputChange}
-        />
-    );
-};
 
