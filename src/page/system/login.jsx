@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars,react/prop-types */
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import styled from "styled-components";
 import {login} from "../../api/system/user.js"
 import { useNavigate } from "react-router-dom";
@@ -112,9 +112,22 @@ export default function LoginPage() {
     //  manage input statement
     const [account, setAccount] = useState('');
     const [password, setPassword] = useState('');
-    const [isChecked, setIsChecked] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        //  when loading, try to get account info from local storage
+        const storedAccount = localStorage.getItem('account');
+        const storedPassword = localStorage.getItem('password');
+        const storedRememberMe = localStorage.getItem('rememberMe') === 'true';
+        //  if obtained, write into the inputText
+        if (storedRememberMe && storedAccount) {
+            setAccount(storedAccount);
+            setPassword(storedPassword);
+            setRememberMe(storedRememberMe);
+        }
+    }, []);
 
     //  handle form submission
     const handleSubmit = () => {
@@ -124,6 +137,16 @@ export default function LoginPage() {
         }).catch(err => {
             alert(err)
         })
+        //  execute 'stay logged in' logic
+        if (rememberMe) {   //  if true, store info locally
+            localStorage.setItem('account', account);
+            localStorage.setItem('password', password);
+            localStorage.setItem('rememberMe', true);
+        } else {
+            localStorage.removeItem('account');
+            localStorage.removeItem('password');
+            localStorage.removeItem('rememberMe');
+        }
     }
 
     return (
@@ -165,7 +188,7 @@ export default function LoginPage() {
                         </tr>
                         <tr>
                             <td>
-                                <CheckBox des={"Stay logged in"} value={isChecked} onChange={setIsChecked}></CheckBox>
+                                <CheckBox des={"Stay logged in"} value={rememberMe} onChange={setRememberMe}></CheckBox>
                             </td>
                         </tr>
                         <tr className={"centered-row"}>
